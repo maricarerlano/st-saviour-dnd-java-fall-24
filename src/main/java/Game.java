@@ -1,4 +1,3 @@
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class Game {
@@ -11,6 +10,14 @@ public class Game {
         System.out.print("Name: ");
         String name = scanner.nextLine();
 
+        System.out.println("Role: ");
+        String role = scanner.nextLine();
+
+        Tav player = new Tav(name, role);
+        player.printCharacterSheet();
+
+        printDramaticText(player.name + " the " + player.role + " ");
+
         // TODO Create Tav instance with user input.
         // TODO Implement generateMonster()
         // TODO Collect buffs from user.
@@ -18,6 +25,42 @@ public class Game {
         // TODO Print Critical Success & Critical Failure.
         // TODO Check for 3 successful monster encounters.
         // TODO Print GAME OVER or winning message. 
+        
+    }
+
+    public static int generateMonster() {
+        int monsterType = (int)(math.random() + (100 - 1 + 1) + 1);
+
+        if (monsterType <= 50) {
+            System.out.println("You encounter a Stalker!");
+            return 10;
+        } else if (monsterType <= 83) {
+            System.out.println("You encounter a Clicker!");
+            return 15;
+        } else {
+            System.out.println("You encounter a Bloater!");
+            return 20;
+        }
+    }
+
+    public Sring collectBuff(){
+        String buff = scanner.nextLine();
+        r buff;
+
+    }
+
+    public int roll(String buff){
+        int roll = (int)(math.random() + (20 -1 + 1) + 1);
+
+       if (buff.equals(advantage))
+        roll1 = (int)(math.random() + (20 -1 + 1) + 1);
+
+
+        if (roll == 20){
+            System.out.println("CRITICAL SUCCESS");
+        } else if (roll == 1){
+            System.out.println("CRITICAL FAILURE");
+        }
         
     }
 
