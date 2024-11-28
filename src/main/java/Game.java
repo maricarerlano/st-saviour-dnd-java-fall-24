@@ -1,3 +1,4 @@
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class Game {
@@ -6,19 +7,62 @@ public class Game {
         // Create Scanner for collecting user input.
         Scanner scanner = new Scanner(System.in);
 
+        
+
         // Collect character name from user.
         System.out.print("Name: ");
         String name = scanner.nextLine();
 
-        System.out.println("Role: ");
+        String[] roles = {"Survivor", "Hunter", "Medic", "Scavenger", "Outlaw"};
+
+        System.out.println("Choose your role (Survivor, Hunter, Medic, Scavenger, Outlaw): ");
         String role = scanner.nextLine();
 
+        while (!role.equalsIgnoreCase("Survivor") && !role.equalsIgnoreCase("Hunter") && !role.equalsIgnoreCase("Medic") && !role.equalsIgnoreCase("Scavenger") && !role.equalsIgnoreCase("Outlaw")) {
+            System.out.println("Invalid role. Please choose from the predefined list (Survivor, Hunter, Medic, Scavenger, Outlaw): ");
+            role = scanner.nextLine();
+        }
+        System.out.println("--------------------");
+
+
+
+        // TODO Create Tav instance with user input.
         Tav player = new Tav(name, role);
         player.printCharacterSheet();
 
-        printDramaticText(player.name + " the " + player.role + " ");
+        Ascii.drawTitle();
 
-        // TODO Create Tav instance with user input.
+        printDramaticText("The world has been ravaged by a deadly fungal outbreak, where " + player.name + " the " + player.role + " must fight off hordes of infected to survive.");
+
+        int successfulEncounters = 0;
+        boolean gameOver = false;
+
+        while (successfulEncounters < 3 && !gameOver) {
+            int monsterDifficulty = generateMonster();
+
+            System.out.print("Choose a buff for your roll (a for Advantage or g Guidance): ");
+            String buff = scanner.nextLine();
+
+            int rollResult = player.roll(buff);
+
+            if (rollResult >= monsterDifficulty) {
+                System.out.println("You are able to kill the infected!");
+                successfulEncounters++;
+            } else {
+                printDramaticText("You were brutally killed by the infected..");
+                gameOver = true;
+            }
+            
+        }
+
+        if (successfulEncounters == 3) {
+            printDramaticText("CONGRATULATIONS! You've survived the horrors and made it through this fight. The world is a little safer... for now...");
+        } else {
+            System.out.println("GAME OVER");
+            printDramaticText("The world has claimed another survivor...");
+        }
+    }
+       
         // TODO Implement generateMonster()
         // TODO Collect buffs from user.
         // TODO Implement roll() method for Tav.
@@ -26,46 +70,47 @@ public class Game {
         // TODO Check for 3 successful monster encounters.
         // TODO Print GAME OVER or winning message. 
         
-    }
+    
 
     public static int generateMonster() {
-        int monsterType = (int)(math.random() + (100 - 1 + 1) + 1);
+    
+        int monsterTypeRoll = (int)(Math.random() * 100) + 1;
 
-        if (monsterType <= 50) {
-            System.out.println("You encounter a Stalker!");
-            return 10;
-        } else if (monsterType <= 83) {
-            System.out.println("You encounter a Clicker!");
-            return 15;
+        String monsterType = "";
+        String monsterEmoji = "";
+        int rollRequired = 0;
+        String encounterMessage = "";
+    
+        if (monsterTypeRoll <= 50) {
+            monsterType = "Runner";
+            monsterEmoji = "🧟";
+            rollRequired = 5; 
+            encounterMessage = "You hear shuffling, followed by an unnatural breath... a Runner is nearby... ";
+        } else if (monsterTypeRoll <= 83) {
+            monsterType = "Clicker";
+            monsterEmoji = "🦠";
+            rollRequired = 9;
+            encounterMessage = "A sudden clicking sound pierces the silence. A clicker is moving towards you, rapidly... ";
         } else {
-            System.out.println("You encounter a Bloater!");
-            return 20;
+            monsterType = "Bloater";
+            monsterEmoji = "💀👹";
+            rollRequired = 14;
+            encounterMessage = "The ground shakes as you hear slow, heavy footsteps... a Bloater is approaching... ";
         }
+    
+        System.out.println("==================================================================================================");
+        System.out.println("");
+        printDramaticText(monsterEmoji + encounterMessage + monsterEmoji);
+        System.out.println("Roll Required to beat " + monsterType + ": " + rollRequired);
+        System.out.println("");
+        System.out.println("==================================================================================================");
+
+        return rollRequired;
     }
-
-    public Sring collectBuff(){
-        String buff = scanner.nextLine();
-        r buff;
-
-    }
-
-    public int roll(String buff){
-        int roll = (int)(math.random() + (20 -1 + 1) + 1);
-
-       if (buff.equals(advantage))
-        roll1 = (int)(math.random() + (20 -1 + 1) + 1);
-
-
-        if (roll == 20){
-            System.out.println("CRITICAL SUCCESS");
-        } else if (roll == 1){
-            System.out.println("CRITICAL FAILURE");
-        }
-        
-    }
+    
 
     public static void printDramaticText(String text) {
-        // Delay in milliseconds
+        // Delay milliseconds
         int delay = 100;
 
         for (char c : text.toCharArray()) {

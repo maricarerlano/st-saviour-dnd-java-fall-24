@@ -3,44 +3,77 @@ import java.util.Random;
 public class Tav {
     public String name;
     public String role;
-    public int level;
 
-    public int constitution;
     public int strength;
-    public int dexterity;
-    public int charisma;
-    public int wisdom;
+    public int stamina;
+    public int stealth;
+    public int survival;
+    public int combat;
     public int intelligence;
 
     public Tav(String name, String role) {
         this.name = name;
         this.role = role;
 
-        this.level = 1;
         int[] stats = new int[]{15, 14, 13, 12, 10, 8};
         shuffle(stats);
 
         this.strength = stats[0];
-        this.dexterity = stats[1];
-        this.constitution = stats[2];
-        this.intelligence = stats[3];
-        this.charisma = stats[4];
-        this.widsom = stats[5];
+        this.stamina = stats[1];
+        this.stealth = stats[2];
+        this.survival = stats[3];
+        this.combat = stats[4];
+        this.intelligence = stats[5];
     }
 
-    public void printCharacerSheet() {
+    public void printCharacterSheet() {
         System.out.println("Name:  " + this.name);
         System.out.println("Role:  " + this.role);
-        System.out.println("Level: " + this.level);
-        System.out.println("********************");
+        System.out.println("====================");
         System.out.println("Strength:     " + this.strength);
-        System.out.println("Dexterity:    " + this.dexterity);
-        System.out.println("Constitution: " + this.constitution);
-        System.out.println("Charisma:     " + this.charisma);
+        System.out.println("Stamina:      " + this.stamina);
+        System.out.println("Stealth:      " + this.stealth);
+        System.out.println("Survival:     " + this.survival);
+        System.out.println("Combat:       " + this.combat);
         System.out.println("Intelligence: " + this.intelligence);
-        System.out.println("Wisdom:       " + this.wisdom);
+        System.out.println("====================");
+
     }
     
+    public int roll(String buff) {
+
+    int d20 = (int)(Math.random() * 20) + 1;
+    int result = d20;
+
+
+    if (buff.equals("a")) {
+        int secondRoll = (int)(Math.random() * 20) + 1;
+        result = Math.max(d20, secondRoll); 
+
+        Ascii.drawD20(result);
+    }
+    else if (buff.equals("g")) {
+        int d4 = (int)(Math.random() * 4) + 1; 
+        result = d20 + d4;
+        Ascii.drawD20(d20); 
+        Ascii.drawD4(d4);    
+    }
+    else {
+        result = d20;
+        Ascii.drawD20(result);
+    }
+
+ 
+    if (d20 == 20) {
+        System.out.println("CRITICAL SUCCESS!");
+    } else if (result == 1) {
+        System.out.println("CRITICAL FAILURE!");
+    }
+
+    return result;
+}
+   
+
     // TODO - create Tav class here!
 
     // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
@@ -55,4 +88,5 @@ public class Tav {
             array[index] = temp;
         }
     }
+    
 }
